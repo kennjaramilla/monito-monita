@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #b91c1c;
+  --color-brand-dark: #991b1b;
+  --color-gold: #f59e0b;
+  --color-cream: #fff7ed;
+  --font-display: "Fredoka", ui-rounded, system-ui, sans-serif;
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root { color-scheme: light; }
+
+body {
+  background: var(--color-cream);
+  color: #292524;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-display text-lg font-semibold transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary { @apply btn bg-brand text-white shadow-md shadow-red-900/20 hover:bg-brand-dark; }
+@utility btn-ghost { @apply btn border-2 border-stone-200 bg-white text-stone-800 hover:border-stone-300; }
+@utility card { @apply rounded-3xl bg-white p-5 shadow-sm ring-1 ring-stone-200/70 sm:p-6; }
+@utility field {
+  @apply w-full rounded-xl border-2 border-stone-200 bg-white px-3.5 py-2.5 text-base outline-none transition placeholder:text-stone-400 focus:border-brand;
+}
+@utility label { @apply mb-1.5 block text-sm font-bold text-stone-700; }
+
+@keyframes fall {
+  0% { transform: translateY(-10vh) rotate(0); opacity: 1; }
+  100% { transform: translateY(105vh) rotate(540deg); opacity: 0.8; }
+}
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.animate-pop { animation: pop 0.45s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
