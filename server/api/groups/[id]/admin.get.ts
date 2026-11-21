@@ -1,7 +1,7 @@
 import type { AdminResponse } from '#shared/group'
 
 // GET /api/groups/:id/admin (x-admin-key): everyone's link and whether they've
-// drawn. Never who drew whom.
+// drawn, plus their wishlist. Never who drew whom.
 export default defineEventHandler(async (event): Promise<AdminResponse> => {
   const { group, adminKey } = await requireAdmin(event)
   const people = await Promise.all(
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event): Promise<AdminResponse> => {
         name: p.name,
         token: personToken(adminKey, group.id, p.id),
         drawn: Boolean(state.drawnAt),
-        hasWishlist: Boolean(state.wishlist),
+        wishlist: state.wishlist,
       }
     }),
   )

@@ -100,7 +100,7 @@ async function share(p: AdminResponse['people'][number]) {
           <div class="min-w-0 flex-1">
             <p class="truncate font-bold">{{ p.name }}</p>
             <p class="text-sm" :class="p.drawn ? 'text-green-700' : 'text-stone-500'">
-              {{ p.drawn ? 'Drawn ✓' : 'Not drawn yet' }}<span v-if="p.hasWishlist"> · has a wishlist</span>
+              {{ p.drawn ? 'Drawn ✓' : 'Not drawn yet' }}<span v-if="p.wishlist"> · has a wishlist</span>
             </p>
           </div>
           <button type="button" class="btn-primary shrink-0 px-4 py-2 text-base" @click="share(p)">

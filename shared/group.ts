@@ -35,7 +35,7 @@ export interface MeResponse {
 export interface AdminResponse {
   id: string
   group: GroupInfo
-  people: { id: string; name: string; token: string; drawn: boolean; hasWishlist: boolean }[]
+  people: { id: string; name: string; token: string; drawn: boolean; wishlist: string }[]
 }
 
 export interface CreateResponse {
