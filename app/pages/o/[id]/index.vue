@@ -9,6 +9,7 @@ const { secret: adminKey, ready } = useHashSecret()
 const data = ref<AdminResponse | null>(null)
 const error = ref('')
 const copied = ref('')
+const showWishlists = ref(false)
 const isNew = route.query.new === '1'
 
 async function load() {
@@ -23,6 +24,7 @@ async function load() {
 watch(adminKey, (k) => k && load())
 
 const drawnCount = computed(() => data.value?.people.filter((p) => p.drawn).length ?? 0)
+const wishlistCount = computed(() => data.value?.people.filter((p) => p.wishlist).length ?? 0)
 const organizerLink = computed(() => (import.meta.client ? `${location.origin}/o/${groupId}#${adminKey.value}` : ''))
 
 function flash(id: string) {
@@ -100,7 +102,7 @@ async function share(p: AdminResponse['people'][number]) {
           <div class="min-w-0 flex-1">
             <p class="truncate font-bold">{{ p.name }}</p>
             <p class="text-sm" :class="p.drawn ? 'text-green-700' : 'text-stone-500'">
-              {{ p.drawn ? 'Drawn ✓' : 'Not drawn yet' }}<span v-if="p.hasWishlist"> · has a wishlist</span>
+              {{ p.drawn ? 'Drawn ✓' : 'Not drawn yet' }}<span v-if="p.wishlist"> · has a wishlist</span>
             </p>
           </div>
           <button type="button" class="btn-primary shrink-0 px-4 py-2 text-base" @click="share(p)">
@@ -109,6 +111,24 @@ async function share(p: AdminResponse['people'][number]) {
         </li>
       </ul>
       <button type="button" class="mt-2 text-sm font-bold text-brand hover:underline" @click="load">Refresh</button>
+    </section>
+
+    <section class="card">
+      <div class="flex items-baseline justify-between">
+        <h2 class="font-display text-xl font-semibold">Wishlists</h2>
+        <span class="text-sm font-bold text-stone-500">{{ wishlistCount }}/{{ data.people.length }} added</span>
+      </div>
+      <p class="mt-1 text-sm text-stone-600">Hidden so nobody sees them over your shoulder.</p>
+      <button type="button" class="btn-ghost mt-3 w-full text-base" @click="showWishlists = !showWishlists">
+        {{ showWishlists ? 'Hide wishlists' : 'Show wishlists' }}
+      </button>
+      <ul v-if="showWishlists" class="mt-3 divide-y divide-stone-100">
+        <li v-for="p in data.people" :key="p.id" class="py-3">
+          <p class="font-bold">{{ p.name }}</p>
+          <p v-if="p.wishlist" class="mt-1 whitespace-pre-line text-stone-700">{{ p.wishlist }}</p>
+          <p v-else class="mt-1 text-sm text-stone-500">No wishlist yet</p>
+        </li>
+      </ul>
     </section>
 
     <section class="card text-center">
